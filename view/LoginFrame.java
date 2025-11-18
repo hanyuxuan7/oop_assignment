@@ -42,6 +42,7 @@ public class LoginFrame extends JFrame {
         dataManager.loadStaff("data/staff.txt");
         dataManager.loadCompanyReps("data/companyreps.txt");
         dataManager.loadInternships("data/internships.txt");
+        dataManager.linkInternshipsToReps();
         dataManager.loadApplications("data/applications.txt");
         dataManager.loadActivityLogs("data/activitylogs.txt");
     }
@@ -186,12 +187,22 @@ public class LoginFrame extends JFrame {
             return;
         }
 
-        CompanyRepresentative rep = new CompanyRepresentative(email, name, password, company, dept, position);
-        dataManager.addUser(rep);
-        dataManager.saveAllData("data/students.txt", "data/staff.txt", "data/companyreps.txt", "data/internships.txt", "data/applications.txt");
-        dataManager.saveActivityLogs("data/activitylogs.txt");
-        JOptionPane.showMessageDialog(this, "Registration submitted for approval.", "Success", JOptionPane.INFORMATION_MESSAGE);
-        tabbedPane.setSelectedIndex(0);
+        if (dataManager.getUser(email) != null) {
+            JOptionPane.showMessageDialog(this, "This email is already registered.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            CompanyRepresentative rep = new CompanyRepresentative(email, name, password, company, dept, position);
+            dataManager.addUser(rep);
+            dataManager.saveAllData("data/students.txt", "data/staff.txt", "data/companyreps.txt", "data/internships.txt", "data/applications.txt");
+            dataManager.saveActivityLogs("data/activitylogs.txt");
+            JOptionPane.showMessageDialog(this, "Registration submitted for approval.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            tabbedPane.setSelectedIndex(0);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Registration failed: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }
 
     private void showResetPasswordDialog(String userID) {

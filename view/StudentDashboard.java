@@ -389,6 +389,11 @@ public class StudentDashboard extends JFrame {
             return;
         }
 
+        if (oldPassword.equals(newPassword)) {
+            JOptionPane.showMessageDialog(this, "New password must be different from the old password.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         if (authManager.changePassword(oldPassword, newPassword)) {
             dataManager.saveAllData("data/students.txt", "data/staff.txt", "data/companyreps.txt", "data/internships.txt", "data/applications.txt");
             JOptionPane.showMessageDialog(this, "Password changed successfully! Please log in again.", "Success", JOptionPane.INFORMATION_MESSAGE);

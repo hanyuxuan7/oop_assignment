@@ -29,6 +29,7 @@ public class MainMenu {
         dataManager.loadStaff("data/staff.txt");
         dataManager.loadCompanyReps("data/companyreps.txt");
         dataManager.loadInternships("data/internships.txt");
+        dataManager.linkInternshipsToReps();
         dataManager.loadApplications("data/applications.txt");
 
         while (true) {

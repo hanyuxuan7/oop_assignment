@@ -530,6 +530,11 @@ public class StaffDashboard extends JFrame {
             return;
         }
 
+        if (oldPassword.equals(newPassword)) {
+            JOptionPane.showMessageDialog(this, "New password must be different from the old password.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         if (authManager.changePassword(oldPassword, newPassword)) {
             dataManager.saveAllData("data/students.txt", "data/staff.txt", "data/companyreps.txt", "data/internships.txt", "data/applications.txt");
             dataManager.saveActivityLogs("data/activitylogs.txt");

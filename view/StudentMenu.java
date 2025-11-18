@@ -176,6 +176,11 @@ public class StudentMenu {
             return;
         }
 
+        if (oldPassword.equals(newPassword)) {
+            System.out.println("New password must be different from the old password.");
+            return;
+        }
+
         if (authManager.changePassword(oldPassword, newPassword)) {
             dataManager.saveAllData("data/students.txt", "data/staff.txt", "data/companyreps.txt", "data/internships.txt", "data/applications.txt");
             System.out.println("Password changed successfully! Please log in again.");

@@ -145,6 +145,18 @@ public class DataManager {
         }
     }
 
+    public void linkInternshipsToReps() {
+        for (Internship internship : internships.values()) {
+            String repInCharge = internship.getRepInCharge();
+            if (repInCharge != null && !repInCharge.isEmpty()) {
+                CompanyRepresentative rep = companyReps.get(repInCharge);
+                if (rep != null) {
+                    rep.addInternship(internship);
+                }
+            }
+        }
+    }
+
     public void loadApplications(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;

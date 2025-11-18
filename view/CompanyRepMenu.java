@@ -477,6 +477,18 @@ public class CompanyRepMenu {
         String oldPassword = scanner.nextLine().trim();
         System.out.print("Enter new password: ");
         String newPassword = scanner.nextLine().trim();
+        System.out.print("Confirm new password: ");
+        String confirmPassword = scanner.nextLine().trim();
+
+        if (!newPassword.equals(confirmPassword)) {
+            System.out.println("Passwords do not match.");
+            return;
+        }
+
+        if (oldPassword.equals(newPassword)) {
+            System.out.println("New password must be different from the old password.");
+            return;
+        }
 
         if (authManager.changePassword(oldPassword, newPassword)) {
             dataManager.saveAllData("data/students.txt", "data/staff.txt", "data/companyreps.txt", "data/internships.txt", "data/applications.txt");
