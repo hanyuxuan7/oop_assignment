@@ -1,0 +1,411 @@
+@startuml Internship_Management_System
+
+!theme plain
+skinparam backgroundColor #FEFEFE
+skinparam classBackgroundColor #F0F0F0
+skinparam classBorderColor #333333
+skinparam arrowColor #333333
+
+' Entity Classes
+package entity {
+    abstract class User {
+        #userID: String
+        #name: String
+        #password: String
+        --
+        +getUserID(): String
+        +getName(): String
+        +getPassword(): String
+        +setPassword(String): void
+        +validatePassword(String): boolean
+    }
+
+    class Student extends User {
+        -yearOfStudy: int
+        -major: String
+        -applications: List<InternshipApplication>
+        -acceptedInternshipID: String
+        --
+        +getYearOfStudy(): int
+        +getMajor(): String
+        +getApplications(): List
+        +addApplication(InternshipApplication): void
+        +removeApplication(InternshipApplication): void
+        +getAcceptedInternshipID(): String
+        +setAcceptedInternshipID(String): void
+        +canApplyForLevel(String): boolean
+    }
+
+    class CareerCenterStaff extends User {
+        -department: String
+        --
+        +getDepartment(): String
+    }
+
+    class CompanyRepresentative extends User {
+        -companyName: String
+        -department: String
+        -position: String
+        -approved: boolean
+        -createdInternships: List<Internship>
+        --
+        +getCompanyName(): String
+        +getDepartment(): String
+        +getPosition(): String
+        +isApproved(): boolean
+        +setApproved(boolean): void
+        +getCreatedInternships(): List
+        +addInternship(Internship): void
+    }
+
+    class Internship {
+        -internshipID: String
+        -title: String
+        -description: String
+        -level: String
+        -preferredMajor: String
+        -openingDate: LocalDate
+        -closingDate: LocalDate
+        -status: String
+        -companyName: String
+        -repInCharge: String
+        -numSlots: int
+        -filledSlots: int
+        -visible: boolean
+        -applications: List<InternshipApplication>
+        --
+        +getInternshipID(): String
+        +getTitle(): String
+        +getDescription(): String
+        +getLevel(): String
+        +getPreferredMajor(): String
+        +getOpeningDate(): LocalDate
+        +getClosingDate(): LocalDate
+        +getStatus(): String
+        +getCompanyName(): String
+        +getRepInCharge(): String
+        +getNumSlots(): int
+        +getFilledSlots(): int
+        +isVisible(): boolean
+        +getApplications(): List
+        +addApplication(InternshipApplication): void
+        +isFull(): boolean
+        +canApply(LocalDate): boolean
+    }
+
+    class InternshipApplication {
+        -applicationID: String
+        -studentID: String
+        -internshipID: String
+        -status: String
+        -withdrawalRequested: boolean
+        -withdrawalReason: String
+        -confirmed: boolean
+        --
+        +getApplicationID(): String
+        +getStudentID(): String
+        +getInternshipID(): String
+        +getStatus(): String
+        +setStatus(String): void
+        +isWithdrawalRequested(): boolean
+        +requestWithdrawal(String): void
+        +cancelWithdrawalRequest(): void
+        +getWithdrawalReason(): String
+        +isConfirmed(): boolean
+        +setConfirmed(boolean): void
+    }
+
+    enum InternshipLevel {
+        BASIC
+        INTERMEDIATE
+        ADVANCED
+        --
+        +getDisplayName(): String
+        +fromShortCode(String): InternshipLevel
+    }
+}
+
+' Data Layer
+package data {
+    class DataManager {
+        -users: Map<String, User>
+        -internships: Map<String, Internship>
+        -applications: Map<String, InternshipApplication>
+        -students: Map<String, Student>
+        -companyReps: Map<String, CompanyRepresentative>
+        -staffMembers: Map<String, CareerCenterStaff>
+        --
+        +loadStudents(String): void
+        +loadStaff(String): void
+        +loadCompanyReps(String): void
+        +loadInternships(String): void
+        +loadApplications(String): void
+        +saveAllData(...): void
+        +getUser(String): User
+        +getStudent(String): Student
+        +getInternship(String): Internship
+        +getApplication(String): InternshipApplication
+        +getCompanyRep(String): CompanyRepresentative
+        +getStaffMember(String): CareerCenterStaff
+        +getAllInternships(): Collection
+        +getAllUsers(): Collection
+        +getAllApplications(): Collection
+        +addUser(User): void
+        +addInternship(Internship): void
+        +addApplication(InternshipApplication): void
+    }
+}
+
+' Control Layer
+package control {
+    class AuthenticationManager {
+        -dataManager: DataManager
+        -currentUser: User
+        --
+        +login(String, String): String
+        +logout(): void
+        +getCurrentUser(): User
+        +isLoggedIn(): boolean
+        +changePassword(String, String): boolean
+        +getUserType(User): String
+        +resetPassword(String, String): boolean
+    }
+
+    class StudentManager {
+        -dataManager: DataManager
+        --
+        +getAvailableInternships(Student): List
+        +applyForInternship(Student, String): boolean
+        +getStudentApplications(Student): List
+        +getInternshipDetails(String): Internship
+        +acceptPlacement(Student, String): boolean
+        +withdrawApplication(Student, String): boolean
+    }
+
+    class CareerCenterStaffManager {
+        -dataManager: DataManager
+        --
+        +getPendingRegistrations(): List
+        +approveCompanyRepRegistration(String): boolean
+        +rejectCompanyRepRegistration(String): boolean
+        +getPendingInternships(): List
+        +approveInternship(String): boolean
+        +rejectInternship(String): boolean
+        +getPendingWithdrawals(): List
+        +approveWithdrawal(String): boolean
+        +rejectWithdrawal(String): boolean
+        +getInternshipsByFilter(String, String, String): List
+    }
+
+    class CompanyRepresentativeManager {
+        -dataManager: DataManager
+        --
+        +createInternship(...): boolean
+        +getCreatedInternships(CompanyRepresentative): List
+        +getApplicationsForInternship(String): List
+        +getStudentDetails(String): Student
+        +approveApplication(String): boolean
+        +rejectApplication(String): boolean
+        +toggleInternshipVisibility(String): void
+        +updateInternshipDetails(...): boolean
+    }
+
+    class FilterManager {
+        -dataManager: DataManager
+        --
+        +filterByStatus(String): List
+        +filterByMajor(String): List
+        +filterByLevel(String): List
+        +filterByCompany(String): List
+    }
+}
+
+' View Layer
+package view {
+    class LoginFrame {
+        -dataManager: DataManager
+        -authManager: AuthenticationManager
+        -studentManager: StudentManager
+        -companyRepManager: CompanyRepresentativeManager
+        -staffManager: CareerCenterStaffManager
+        -filterManager: FilterManager
+        --
+        +createUI(): void
+        +createLoginPanel(): JPanel
+        +createRegisterPanel(): JPanel
+        +handleLogin(String, String): void
+        +handleCompanyRepRegistration(...): void
+        +openDashboard(): void
+    }
+
+    class StudentDashboard {
+        -student: Student
+        -dataManager: DataManager
+        -authManager: AuthenticationManager
+        -studentManager: StudentManager
+        -filterManager: FilterManager
+        --
+        +createUI(): void
+        +createMenuPanel(): JPanel
+        +createInternshipsPanel(): JPanel
+        +createApplicationsPanel(): JPanel
+        +createChangePasswordPanel(): JPanel
+        +logout(): void
+    }
+
+    class StaffDashboard {
+        -staff: CareerCenterStaff
+        -dataManager: DataManager
+        -authManager: AuthenticationManager
+        -staffManager: CareerCenterStaffManager
+        -filterManager: FilterManager
+        --
+        +createUI(): void
+        +createMenuPanel(): JPanel
+        +createCompanyRepPanel(): JPanel
+        +createInternshipsPanel(): JPanel
+        +createWithdrawalsPanel(): JPanel
+        +createReportsPanel(): JPanel
+        +logout(): void
+    }
+
+    class CompanyRepDashboard {
+        -rep: CompanyRepresentative
+        -dataManager: DataManager
+        -authManager: AuthenticationManager
+        -companyRepManager: CompanyRepresentativeManager
+        --
+        +createUI(): void
+        +createMenuPanel(): JPanel
+        +createCreateInternshipPanel(): JPanel
+        +createViewInternshipsPanel(): JPanel
+        +createEditInternshipPanel(): JPanel
+        +createApplicationsPanel(): JPanel
+        +logout(): void
+    }
+
+    class MainMenu {
+        -scanner: Scanner
+        -dataManager: DataManager
+        -authManager: AuthenticationManager
+        -studentManager: StudentManager
+        -companyRepManager: CompanyRepresentativeManager
+        -staffManager: CareerCenterStaffManager
+        -filterManager: FilterManager
+        --
+        +start(): void
+        +showLoginMenu(): void
+        +login(): void
+        +registerCompanyRep(): void
+    }
+
+    class StudentMenu {
+        -scanner: Scanner
+        -dataManager: DataManager
+        -authManager: AuthenticationManager
+        -studentManager: StudentManager
+        -filterManager: FilterManager
+        --
+        +show(Student): void
+        +viewAvailableInternships(Student): void
+        +applyForInternship(Student): void
+        +viewApplications(Student): void
+        +acceptPlacement(Student): void
+        +requestWithdrawal(Student): void
+    }
+
+    class StaffMenu {
+        -scanner: Scanner
+        -dataManager: DataManager
+        -authManager: AuthenticationManager
+        -staffManager: CareerCenterStaffManager
+        -filterManager: FilterManager
+        --
+        +show(CareerCenterStaff): void
+        +manageCompanyRepRegistrations(): void
+        +manageInternshipApprovals(): void
+        +manageWithdrawals(): void
+        +generateReports(): void
+    }
+
+    class CompanyRepMenu {
+        -scanner: Scanner
+        -dataManager: DataManager
+        -authManager: AuthenticationManager
+        -companyRepManager: CompanyRepresentativeManager
+        --
+        +show(CompanyRepresentative): void
+        +createInternship(CompanyRepresentative): void
+        +viewInternships(CompanyRepresentative): void
+        +viewApplications(CompanyRepresentative): void
+        +approveRejectApplication(): void
+        +toggleVisibility(): void
+        +editInternship(CompanyRepresentative): void
+    }
+}
+
+' App Layer
+package app {
+    class InternshipApp {
+        --
+        +main(String[]): void
+    }
+
+    class GuiApp {
+        --
+        +main(String[]): void
+    }
+}
+
+' Relationships
+DataManager --> Student: manages
+DataManager --> CareerCenterStaff: manages
+DataManager --> CompanyRepresentative: manages
+DataManager --> Internship: manages
+DataManager --> InternshipApplication: manages
+DataManager --> User: manages
+
+StudentManager --> DataManager: uses
+CareerCenterStaffManager --> DataManager: uses
+CompanyRepresentativeManager --> DataManager: uses
+FilterManager --> DataManager: uses
+AuthenticationManager --> DataManager: uses
+
+AuthenticationManager --> Student: authenticates
+AuthenticationManager --> CareerCenterStaff: authenticates
+AuthenticationManager --> CompanyRepresentative: authenticates
+
+CompanyRepresentative --> Internship: creates
+CompanyRepresentative --> InternshipApplication: reviews
+
+Student --> InternshipApplication: submits
+Internship --> InternshipApplication: receives
+
+LoginFrame --> AuthenticationManager: uses
+LoginFrame --> StudentManager: uses
+LoginFrame --> CareerCenterStaffManager: uses
+LoginFrame --> CompanyRepresentativeManager: uses
+LoginFrame --> FilterManager: uses
+LoginFrame --> StudentDashboard: opens
+LoginFrame --> StaffDashboard: opens
+LoginFrame --> CompanyRepDashboard: opens
+
+StudentDashboard --> StudentManager: uses
+StudentDashboard --> AuthenticationManager: uses
+StudentDashboard --> FilterManager: uses
+
+StaffDashboard --> CareerCenterStaffManager: uses
+StaffDashboard --> AuthenticationManager: uses
+StaffDashboard --> FilterManager: uses
+
+CompanyRepDashboard --> CompanyRepresentativeManager: uses
+CompanyRepDashboard --> AuthenticationManager: uses
+
+MainMenu --> StudentMenu: creates
+MainMenu --> StaffMenu: creates
+MainMenu --> CompanyRepMenu: creates
+
+InternshipApp --> MainMenu: launches
+GuiApp --> LoginFrame: launches
+
+@enduml

@@ -1,0 +1,2 @@
+staff001@ntu.edu.sg|Ms. Tan Wei|password|Career Centre
+staff002@ntu.edu.sg|Mr. Lim Hao|password|Career Centre
