@@ -110,6 +110,28 @@ public class MainMenu {
             return;
         }
 
+        if (user instanceof CompanyRepresentative) {
+            System.out.println("Please contact IT centre to reset your password");
+            authManager.logout();
+            return;
+        }
+
+        if (user instanceof Student) {
+            Student student = (Student) user;
+            String inputEmail = getValidatedInput("Please confirm your email address: ");
+            if (!inputEmail.equals(student.getEmail())) {
+                System.out.println("Email confirmation failed. Password reset cancelled.");
+                return;
+            }
+        } else if (user instanceof CareerCenterStaff) {
+            CareerCenterStaff staff = (CareerCenterStaff) user;
+            String inputEmail = getValidatedInput("Please confirm your email address: ");
+            if (!inputEmail.equals(staff.getEmail())) {
+                System.out.println("Email confirmation failed. Password reset cancelled.");
+                return;
+            }
+        }
+
         System.out.println("Password Reset");
         String newPassword = getValidatedInput("Enter new password: ");
         String confirmPassword = getValidatedInput("Confirm password: ");

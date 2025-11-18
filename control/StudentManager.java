@@ -3,6 +3,7 @@ package control;
 import entity.*;
 import data.DataManager;
 import java.util.*;
+import java.time.LocalDate;
 
 public class StudentManager {
     private DataManager dataManager;
@@ -16,15 +17,29 @@ public class StudentManager {
     }
 
     public List<Internship> getAvailableInternships(Student student) {
+        return getAvailableInternships(student, true);
+    }
+
+    public List<Internship> getAvailableInternships(Student student, boolean openOnly) {
         List<Internship> availableInternships = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        
+        String studentMajor = student.getMajor();
 
         for (Internship internship : dataManager.getAllInternships()) {
             if (internship.isVisible() && 
                 internship.getStatus().equals("Approved") &&
-                internship.getPreferredMajor().equals(student.getMajor()) &&
+                internship.getPreferredMajor().equals(studentMajor) &&
                 student.canApplyForLevel(internship.getLevel()) &&
                 !internship.isFull()) {
-                availableInternships.add(internship);
+                
+                if (openOnly) {
+                    if (today.isAfter(internship.getOpeningDate()) && today.isBefore(internship.getClosingDate())) {
+                        availableInternships.add(internship);
+                    }
+                } else {
+                    availableInternships.add(internship);
+                }
             }
         }
 

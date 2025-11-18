@@ -6,13 +6,15 @@ import java.util.List;
 public class Student extends User {
     private int yearOfStudy;
     private String major;
+    private String email;
     private List<InternshipApplication> applications;
     private String acceptedInternshipID;
 
-    public Student(String userID, String name, String password, int yearOfStudy, String major) {
+    public Student(String userID, String name, String password, int yearOfStudy, String major, String email) {
         super(userID, name, password);
         this.yearOfStudy = yearOfStudy;
         this.major = major;
+        this.email = email;
         this.applications = new ArrayList<>();
         this.acceptedInternshipID = null;
     }
@@ -23,6 +25,10 @@ public class Student extends User {
 
     public String getMajor() {
         return major;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public List<InternshipApplication> getApplications() {

@@ -1,1 +1,7 @@
-a89cfd06-c0ce-4e25-be8c-205c85f1ac7c|dso@gmail.com|CompanyRepresentative|Created internship: abc|2025-11-18T18:18:29.957600|INT1763461109925
+00ed3384-e576-4c1f-9a2b-aef4d3a43a76|ellen@apple.com|CompanyRepresentative|Toggled internship visibility to visible|2025-11-19T02:12:09.302811|INT1763488335199
+8934c3bb-4315-48f1-954e-8433812dd775|ellen@apple.com|CompanyRepresentative|Toggled internship visibility to visible|2025-11-19T02:12:21.162313|INT1763486913587
+d0da5aaa-937c-4beb-834a-402b8d06f6af|ellen@apple.com|CompanyRepresentative|Toggled internship visibility to visible|2025-11-19T02:12:26.433520|INT1763486760547
+5f2bb692-68ed-4367-b6ad-cdb5fa452562|janelim@dso.gov.sg|CompanyRepresentative|Created internship: Software Engineer|2025-11-19T02:16:09.705318|INT1763489769701
+2134df7e-5212-48b3-a8e9-d258df8b1456|janelim@dso.gov.sg|CompanyRepresentative|Toggled internship visibility to visible|2025-11-19T02:17:03.276188|INT1763489769701
+74fc9aaf-45e7-4ccd-852d-57f5b3b2c195|janelim@dso.gov.sg|CompanyRepresentative|Toggled internship visibility to hidden|2025-11-19T02:25:12.618084|INT1763489769701
+67d38338-d75c-493d-804b-f2d3cf24cd1b|ellen@apple.com|CompanyRepresentative|Approved application|2025-11-19T02:30:06.616696|APP1763490170247

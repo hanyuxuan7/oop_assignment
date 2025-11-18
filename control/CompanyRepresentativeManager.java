@@ -99,9 +99,9 @@ public class CompanyRepresentativeManager {
         toggleInternshipVisibility(internshipID, null);
     }
 
-    public void toggleInternshipVisibility(String internshipID, String repID) {
+    public boolean toggleInternshipVisibility(String internshipID, String repID) {
         Internship internship = dataManager.getInternship(internshipID);
-        if (internship != null) {
+        if (internship != null && internship.getStatus().equals("Approved")) {
             boolean newVisibility = !internship.isVisible();
             internship.setVisible(newVisibility);
             if (repID != null) {
@@ -110,6 +110,19 @@ public class CompanyRepresentativeManager {
                 dataManager.addActivityLog(log);
             }
             saveData();
+            return true;
+        }
+        return false;
+    }
+
+    public void autoSetVisibilityForApprovedInternship(String internshipID) {
+        Internship internship = dataManager.getInternship(internshipID);
+        if (internship != null && internship.getStatus().equals("Approved")) {
+            LocalDate today = LocalDate.now();
+            if (!today.isBefore(internship.getOpeningDate()) && !today.isAfter(internship.getClosingDate())) {
+                internship.setVisible(true);
+                saveData();
+            }
         }
     }
 
@@ -130,6 +143,10 @@ public class CompanyRepresentativeManager {
             return false;
         }
 
+        if (!internship.getStatus().equals("Pending")) {
+            return false;
+        }
+
         if (title != null && !title.isEmpty()) internship.setTitle(title);
         if (description != null && !description.isEmpty()) internship.setDescription(description);
         if (level != null && !level.isEmpty()) internship.setLevel(level);
@@ -144,6 +161,20 @@ public class CompanyRepresentativeManager {
             dataManager.addActivityLog(log);
         }
 
+        saveData();
+        return true;
+    }
+
+    public boolean deleteInternship(String internshipID, CompanyRepresentative rep) {
+        Internship internship = dataManager.getInternship(internshipID);
+        if (internship == null || !internship.getRepInCharge().equals(rep.getUserID())) {
+            return false;
+        }
+
+        rep.getCreatedInternships().remove(internship);
+        ActivityLog log = new ActivityLog(rep.getUserID(), "CompanyRepresentative",
+            "Deleted internship: " + internship.getTitle(), internshipID);
+        dataManager.addActivityLog(log);
         saveData();
         return true;
     }

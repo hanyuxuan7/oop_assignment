@@ -1,5 +1,5 @@
-U2300001A|John Doe|Student1|1|CSC
-U2300002B|Jane Smith|password|2|EEE
-U2300003C|Michael Chen|password|3|MAE
-U2300004D|Sarah Johnson|password|4|CSC
-U2300005E|David Lee|password|1|EEE
+U2300001A|Tan Wei Ling|TanWei|2|Computer Science|tan.wei.ling@student.edu.sg
+U2300002B|Ng Jia Hao|password|3|Electrical & Electronics Engineering|ng.jia.hao@student.edu.sg
+U2300003C|Lim Yi Xuan|password|4|Mechanical Engineering|lim.yi.xuan@student.edu.sg
+U2300004D|Chong Zhi Hao|password|1|Computer Science|chong.zhi.hao@student.edu.sg
+U2300005E|Wong Shu Hui|password|3|Computer Science|wong.shu.hui@student.edu.sg

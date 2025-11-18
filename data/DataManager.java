@@ -30,23 +30,25 @@ public class DataManager {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.trim().split("\\|");
-                if (parts.length >= 5) {
+                if (parts.length >= 6) {
+                    String userID = parts[0].trim();
+                    String name = parts[1].trim();
+                    String password = parts[2].trim();
+                    int yearOfStudy = Integer.parseInt(parts[3].trim());
+                    String major = parts[4].trim();
+                    String email = parts[5].trim();
+
+                    Student student = new Student(userID, name, password, yearOfStudy, major, email);
+                    students.put(userID, student);
+                    users.put(userID, student);
+                } else if (parts.length >= 5) {
                     String userID = parts[0].trim();
                     String name = parts[1].trim();
                     String password = parts[2].trim();
                     int yearOfStudy = Integer.parseInt(parts[3].trim());
                     String major = parts[4].trim();
 
-                    Student student = new Student(userID, name, password, yearOfStudy, major);
-                    students.put(userID, student);
-                    users.put(userID, student);
-                } else if (parts.length >= 4) {
-                    String userID = parts[0].trim();
-                    String name = parts[1].trim();
-                    int yearOfStudy = Integer.parseInt(parts[2].trim());
-                    String major = parts[3].trim();
-
-                    Student student = new Student(userID, name, "password", yearOfStudy, major);
+                    Student student = new Student(userID, name, password, yearOfStudy, major, "");
                     students.put(userID, student);
                     users.put(userID, student);
                 }
@@ -61,21 +63,23 @@ public class DataManager {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.trim().split("\\|");
-                if (parts.length >= 4) {
+                if (parts.length >= 5) {
+                    String userID = parts[0].trim();
+                    String name = parts[1].trim();
+                    String password = parts[2].trim();
+                    String department = parts[3].trim();
+                    String email = parts[4].trim();
+
+                    CareerCenterStaff staff = new CareerCenterStaff(userID, name, password, department, email);
+                    staffMembers.put(userID, staff);
+                    users.put(userID, staff);
+                } else if (parts.length >= 4) {
                     String userID = parts[0].trim();
                     String name = parts[1].trim();
                     String password = parts[2].trim();
                     String department = parts[3].trim();
 
-                    CareerCenterStaff staff = new CareerCenterStaff(userID, name, password, department);
-                    staffMembers.put(userID, staff);
-                    users.put(userID, staff);
-                } else if (parts.length >= 3) {
-                    String userID = parts[0].trim();
-                    String name = parts[1].trim();
-                    String department = parts[2].trim();
-
-                    CareerCenterStaff staff = new CareerCenterStaff(userID, name, "password", department);
+                    CareerCenterStaff staff = new CareerCenterStaff(userID, name, password, department, "");
                     staffMembers.put(userID, staff);
                     users.put(userID, staff);
                 }
@@ -320,7 +324,7 @@ public class DataManager {
             for (Student student : students.values()) {
                 String line = student.getUserID() + "|" + student.getName() + "|" +
                              student.getPassword() + "|" + student.getYearOfStudy() + "|" +
-                             student.getMajor();
+                             student.getMajor() + "|" + student.getEmail();
                 bw.write(line);
                 bw.newLine();
             }
@@ -333,7 +337,7 @@ public class DataManager {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             for (CareerCenterStaff staff : staffMembers.values()) {
                 String line = staff.getUserID() + "|" + staff.getName() + "|" +
-                             staff.getPassword() + "|" + staff.getDepartment();
+                             staff.getPassword() + "|" + staff.getDepartment() + "|" + staff.getEmail();
                 bw.write(line);
                 bw.newLine();
             }

@@ -66,29 +66,58 @@ public class StudentMenu {
     }
 
     private void viewAvailableInternships(Student student) {
-        System.out.println("\n===== Available Internships =====");
-        List<Internship> internships = studentManager.getAvailableInternships(student);
-
-        if (internships.isEmpty()) {
-            System.out.println("No internships available for your profile.");
-            return;
-        }
-
-        for (int i = 0; i < internships.size(); i++) {
-            Internship internship = internships.get(i);
-            System.out.println((i + 1) + ". " + internship.getTitle() + " - " + internship.getCompanyName());
-            System.out.println("   Level: " + internship.getLevel());
-            System.out.println("   Closing Date: " + internship.getClosingDate());
-        }
-
-        System.out.print("Enter internship number to view details (or 0 to go back): ");
-        try {
-            int choice = Integer.parseInt(scanner.nextLine().trim());
-            if (choice > 0 && choice <= internships.size()) {
-                viewInternshipDetails(internships.get(choice - 1), student);
+        boolean showAll = false;
+        
+        while (true) {
+            System.out.println("\n===== Available Internships =====");
+            List<Internship> internships = studentManager.getAvailableInternships(student, !showAll);
+            
+            if (showAll) {
+                System.out.println("[Showing ALL internships - including closed and not-yet-open]");
+            } else {
+                System.out.println("[Showing OPEN internships only]");
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input.");
+
+            if (internships.isEmpty()) {
+                System.out.println("No internships available for your profile.");
+                System.out.print("(T)oggle to " + (showAll ? "open internships only" : "show all internships") + " or (0) go back: ");
+                String option = scanner.nextLine().trim().toUpperCase();
+                if (option.equals("T")) {
+                    showAll = !showAll;
+                    continue;
+                } else {
+                    break;
+                }
+            }
+
+            for (int i = 0; i < internships.size(); i++) {
+                Internship internship = internships.get(i);
+                System.out.println((i + 1) + ". " + internship.getTitle() + " - " + internship.getCompanyName());
+                System.out.println("   Level: " + internship.getLevel());
+                System.out.println("   Opening Date: " + internship.getOpeningDate());
+                System.out.println("   Closing Date: " + internship.getClosingDate());
+            }
+
+            System.out.println("\n(T)oggle view | Enter number to view details | (0) Go back");
+            System.out.print("Choice: ");
+            String input = scanner.nextLine().trim().toUpperCase();
+            
+            if (input.equals("T")) {
+                showAll = !showAll;
+            } else if (input.equals("0")) {
+                break;
+            } else {
+                try {
+                    int choice = Integer.parseInt(input);
+                    if (choice > 0 && choice <= internships.size()) {
+                        viewInternshipDetails(internships.get(choice - 1), student);
+                    } else {
+                        System.out.println("Invalid input.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input.");
+                }
+            }
         }
     }
 
