@@ -146,7 +146,7 @@ public class CompanyRepDashboard extends JFrame {
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);
         JComboBox<String> levelCombo = new JComboBox<>(new String[]{"Basic", "Intermediate", "Advanced"});
-        JTextField majorField = new JTextField(20);
+        JComboBox<String> majorCombo = new JComboBox<>(new String[]{"Computer Science", "Computer Engineering", "Mechanical Engineering", "Electrical & Electronics Engineering", "Bio Engineering", "Chemical Engineering", "Business", "Aerospace Engineering", "Accounting", "Economics", "Art"});
         JSpinner slotsSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
 
         JPanel datePanel = new JPanel(new GridLayout(2, 1, 5, 5));
@@ -158,7 +158,7 @@ public class CompanyRepDashboard extends JFrame {
         addFormField(panel, "Title:", titleField, gbc, 1);
         addFormField(panel, "Description:", new JScrollPane(descriptionArea), gbc, 2);
         addFormField(panel, "Level:", levelCombo, gbc, 3);
-        addFormField(panel, "Preferred Major:", majorField, gbc, 4);
+        addFormField(panel, "Preferred Major:", majorCombo, gbc, 4);
         addFormField(panel, "Number of Slots:", slotsSpinner, gbc, 5);
 
         gbc.gridx = 0;
@@ -172,10 +172,10 @@ public class CompanyRepDashboard extends JFrame {
             String title = titleField.getText().trim();
             String description = descriptionArea.getText().trim();
             String level = (String) levelCombo.getSelectedItem();
-            String major = majorField.getText().trim();
+            String major = (String) majorCombo.getSelectedItem();
             int slots = (Integer) slotsSpinner.getValue();
 
-            if (title.isEmpty() || description.isEmpty() || major.isEmpty()) {
+            if (title.isEmpty() || description.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "All fields are required.", "Validation Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -203,7 +203,7 @@ public class CompanyRepDashboard extends JFrame {
                     JOptionPane.showMessageDialog(this, "Internship created successfully! Awaiting approval.", "Success", JOptionPane.INFORMATION_MESSAGE);
                     titleField.setText("");
                     descriptionArea.setText("");
-                    majorField.setText("");
+                    majorCombo.setSelectedIndex(0);
                 } else {
                     JOptionPane.showMessageDialog(this, "Failed to create internship. You may have reached the maximum limit of 5.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -323,13 +323,13 @@ public class CompanyRepDashboard extends JFrame {
             descriptionArea.setLineWrap(true);
             descriptionArea.setWrapStyleWord(true);
             JComboBox<String> levelCombo = new JComboBox<>(new String[]{"", "Basic", "Intermediate", "Advanced"});
-            JTextField majorField = new JTextField(20);
+            JComboBox<String> majorCombo = new JComboBox<>(new String[]{"", "Computer Science", "Computer Engineering", "Mechanical Engineering", "Electrical & Electronics Engineering", "Bio Engineering", "Chemical Engineering", "Business", "Aerospace Engineering", "Accounting", "Economics", "Art"});
             JSpinner slotsSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 10, 1));
 
             addFormField(panel, "New Title:", titleField, gbc, 2);
             addFormField(panel, "New Description:", new JScrollPane(descriptionArea), gbc, 3);
             addFormField(panel, "New Level:", levelCombo, gbc, 4);
-            addFormField(panel, "New Major:", majorField, gbc, 5);
+            addFormField(panel, "New Major:", majorCombo, gbc, 5);
             addFormField(panel, "New Slots:", slotsSpinner, gbc, 6);
 
             JButton updateButton = new JButton("Update Internship");
@@ -347,7 +347,7 @@ public class CompanyRepDashboard extends JFrame {
                 String title = titleField.getText().trim().isEmpty() ? null : titleField.getText().trim();
                 String description = descriptionArea.getText().trim().isEmpty() ? null : descriptionArea.getText().trim();
                 String level = levelCombo.getSelectedItem().toString().isEmpty() ? null : levelCombo.getSelectedItem().toString();
-                String major = majorField.getText().trim().isEmpty() ? null : majorField.getText().trim();
+                String major = majorCombo.getSelectedItem().toString().isEmpty() ? null : majorCombo.getSelectedItem().toString();
                 int slots = (Integer) slotsSpinner.getValue();
 
                 if (companyRepManager.updateInternshipDetails(selected.getInternshipID(), title, description, level, major, null, null, slots, rep.getUserID())) {

@@ -86,7 +86,6 @@ public class StudentDashboard extends JFrame {
 
         String[] buttons = {
             "View Available Internships",
-            "Apply for Internship",
             "View My Applications",
             "Accept Placement",
             "Request Withdrawal",
@@ -95,7 +94,6 @@ public class StudentDashboard extends JFrame {
 
         String[] panels = {
             "internships",
-            null,
             "applications",
             null,
             null,
@@ -124,18 +122,15 @@ public class StudentDashboard extends JFrame {
                 cardLayout.show(contentPanel, "internships");
                 break;
             case 1:
-                applyForInternshipDialog();
-                break;
-            case 2:
                 cardLayout.show(contentPanel, "applications");
                 break;
-            case 3:
+            case 2:
                 acceptPlacementDialog();
                 break;
-            case 4:
+            case 3:
                 requestWithdrawalDialog();
                 break;
-            case 5:
+            case 4:
                 cardLayout.show(contentPanel, panelName);
                 break;
         }
@@ -204,7 +199,7 @@ public class StudentDashboard extends JFrame {
 
     private void showInternshipDetails(Internship internship) {
         JDialog dialog = new JDialog(this, "Internship Details", true);
-        dialog.setSize(500, 400);
+        dialog.setSize(500, 450);
         dialog.setLocationRelativeTo(this);
 
         JPanel panel = new JPanel(new GridBagLayout());
@@ -230,11 +225,41 @@ public class StudentDashboard extends JFrame {
         descriptionArea.setEditable(false);
         panel.add(new JScrollPane(descriptionArea), gbc);
 
-        JButton closeButton = new JButton("Close");
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        JButton applyButton = new JButton("Apply (A)");
+        JButton closeButton = new JButton("Leave (0)");
+
+        applyButton.addActionListener(e -> {
+            if (studentManager.applyForInternship(student, internship.getInternshipID())) {
+                JOptionPane.showMessageDialog(dialog, "Application submitted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                dialog.dispose();
+            } else {
+                JOptionPane.showMessageDialog(dialog, "Failed to apply. Check application limits or internship status.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        closeButton.addActionListener(e -> dialog.dispose());
+
+        applyButton.getInputMap().put(KeyStroke.getKeyStroke('A'), "apply");
+        applyButton.getActionMap().put("apply", new AbstractAction() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                applyButton.doClick();
+            }
+        });
+
+        closeButton.getInputMap().put(KeyStroke.getKeyStroke('0'), "close");
+        closeButton.getActionMap().put("close", new AbstractAction() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                closeButton.doClick();
+            }
+        });
+
+        buttonPanel.add(applyButton);
+        buttonPanel.add(closeButton);
+
         gbc.gridy = 9;
         gbc.gridwidth = 2;
-        closeButton.addActionListener(e -> dialog.dispose());
-        panel.add(closeButton, gbc);
+        panel.add(buttonPanel, gbc);
 
         dialog.add(panel);
         dialog.setVisible(true);

@@ -83,6 +83,7 @@ public class LoginFrame extends JFrame {
 
         JLabel passwordLabel = new JLabel("Password:");
         JPasswordField passwordField = new JPasswordField(20);
+        passwordField.setEchoChar('•');
         gbc.gridx = 0;
         gbc.gridy = 1;
         panel.add(passwordLabel, gbc);
@@ -112,12 +113,19 @@ public class LoginFrame extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JTextField emailField = new JTextField(20);
+        emailField.setEditable(true);
         JTextField nameField = new JTextField(20);
+        nameField.setEditable(true);
         JTextField companyField = new JTextField(20);
+        companyField.setEditable(true);
         JTextField deptField = new JTextField(20);
+        deptField.setEditable(true);
         JTextField positionField = new JTextField(20);
+        positionField.setEditable(true);
         JPasswordField passwordField = new JPasswordField(20);
+        passwordField.setEditable(true);
         JPasswordField confirmPasswordField = new JPasswordField(20);
+        confirmPasswordField.setEditable(true);
 
         addFormField(panel, "Email:", emailField, gbc, 0);
         addFormField(panel, "Name:", nameField, gbc, 1);

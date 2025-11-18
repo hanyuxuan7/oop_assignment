@@ -29,12 +29,11 @@ public class StudentMenu {
             System.out.println("\n===== Student Menu =====");
             System.out.println("Welcome, " + student.getName());
             System.out.println("1. View Available Internships");
-            System.out.println("2. Apply for Internship");
-            System.out.println("3. View My Applications");
-            System.out.println("4. Accept Placement");
-            System.out.println("5. Request Withdrawal");
-            System.out.println("6. Change Password");
-            System.out.println("7. Logout");
+            System.out.println("2. View My Applications");
+            System.out.println("3. Accept Placement");
+            System.out.println("4. Request Withdrawal");
+            System.out.println("5. Change Password");
+            System.out.println("6. Logout");
             System.out.print("Choose an option: ");
 
             String choice = scanner.nextLine().trim();
@@ -44,21 +43,18 @@ public class StudentMenu {
                     viewAvailableInternships(student);
                     break;
                 case "2":
-                    applyForInternship(student);
-                    break;
-                case "3":
                     viewApplications(student);
                     break;
-                case "4":
+                case "3":
                     acceptPlacement(student);
                     break;
-                case "5":
+                case "4":
                     requestWithdrawal(student);
                     break;
-                case "6":
+                case "5":
                     changePassword();
                     break;
-                case "7":
+                case "6":
                     authManager.logout();
                     inMenu = false;
                     System.out.println("Logged out successfully.");
@@ -89,14 +85,14 @@ public class StudentMenu {
         try {
             int choice = Integer.parseInt(scanner.nextLine().trim());
             if (choice > 0 && choice <= internships.size()) {
-                viewInternshipDetails(internships.get(choice - 1));
+                viewInternshipDetails(internships.get(choice - 1), student);
             }
         } catch (NumberFormatException e) {
             System.out.println("Invalid input.");
         }
     }
 
-    private void viewInternshipDetails(Internship internship) {
+    private void viewInternshipDetails(Internship internship, Student student) {
         System.out.println("\n===== Internship Details =====");
         System.out.println("Title: " + internship.getTitle());
         System.out.println("Company: " + internship.getCompanyName());
@@ -106,15 +102,28 @@ public class StudentMenu {
         System.out.println("Opening Date: " + internship.getOpeningDate());
         System.out.println("Closing Date: " + internship.getClosingDate());
         System.out.println("Available Slots: " + (internship.getNumSlots() - internship.getFilledSlots()));
-    }
 
-    private void applyForInternship(Student student) {
-        String internshipID = getValidatedInput("Enter Internship ID to apply: ");
+        boolean detailsMenuActive = true;
+        while (detailsMenuActive) {
+            System.out.println("\n(A) Apply | (0) Go Back");
+            System.out.print("Enter option: ");
+            String option = scanner.nextLine().trim().toUpperCase();
 
-        if (studentManager.applyForInternship(student, internshipID)) {
-            System.out.println("Application submitted successfully!");
-        } else {
-            System.out.println("Failed to apply for internship. Check application limits or internship status.");
+            switch (option) {
+                case "A":
+                    if (studentManager.applyForInternship(student, internship.getInternshipID())) {
+                        System.out.println("Application submitted successfully!");
+                        detailsMenuActive = false;
+                    } else {
+                        System.out.println("Failed to apply for internship. Check application limits or internship status.");
+                    }
+                    break;
+                case "0":
+                    detailsMenuActive = false;
+                    break;
+                default:
+                    System.out.println("Invalid option. Please enter A to apply or 0 to go back.");
+            }
         }
     }
 
