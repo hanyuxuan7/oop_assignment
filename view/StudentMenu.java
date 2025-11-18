@@ -178,7 +178,9 @@ public class StudentMenu {
 
         if (authManager.changePassword(oldPassword, newPassword)) {
             dataManager.saveAllData("data/students.txt", "data/staff.txt", "data/companyreps.txt", "data/internships.txt", "data/applications.txt");
-            System.out.println("Password changed successfully!");
+            System.out.println("Password changed successfully! Please log in again.");
+            authManager.logout();
+            return;
         } else {
             System.out.println("Failed to change password. Old password is incorrect.");
         }

@@ -2,6 +2,7 @@ package data;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import entity.*;
 
@@ -12,6 +13,7 @@ public class DataManager {
     private Map<String, Student> students;
     private Map<String, CompanyRepresentative> companyReps;
     private Map<String, CareerCenterStaff> staffMembers;
+    private List<ActivityLog> activityLogs;
 
     public DataManager() {
         this.users = new HashMap<>();
@@ -20,6 +22,7 @@ public class DataManager {
         this.students = new HashMap<>();
         this.companyReps = new HashMap<>();
         this.staffMembers = new HashMap<>();
+        this.activityLogs = new ArrayList<>();
     }
 
     public void loadStudents(String filePath) {
@@ -324,6 +327,51 @@ public class DataManager {
             }
         } catch (IOException e) {
             System.out.println("Error saving staff: " + e.getMessage());
+        }
+    }
+
+    public void addActivityLog(ActivityLog log) {
+        activityLogs.add(log);
+    }
+
+    public List<ActivityLog> getAllActivityLogs() {
+        return new ArrayList<>(activityLogs);
+    }
+
+    public void loadActivityLogs(String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty()) continue;
+                String[] parts = line.trim().split("\\|");
+                if (parts.length >= 5) {
+                    String activityID = parts[0].trim();
+                    String userID = parts[1].trim();
+                    String userType = parts[2].trim();
+                    String activityDescription = parts[3].trim();
+                    LocalDateTime timestamp = LocalDateTime.parse(parts[4].trim());
+                    String relatedEntity = parts.length > 5 ? parts[5].trim() : "";
+
+                    ActivityLog log = new ActivityLog(userID, userType, activityDescription, relatedEntity);
+                    activityLogs.add(log);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error loading activity logs: " + e.getMessage());
+        }
+    }
+
+    public void saveActivityLogs(String filePath) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+            for (ActivityLog log : activityLogs) {
+                String line = log.getActivityID() + "|" + log.getUserID() + "|" +
+                             log.getUserType() + "|" + log.getActivityDescription() + "|" +
+                             log.getTimestamp() + "|" + log.getRelatedEntity();
+                bw.write(line);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving activity logs: " + e.getMessage());
         }
     }
 

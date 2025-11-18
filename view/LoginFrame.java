@@ -43,6 +43,7 @@ public class LoginFrame extends JFrame {
         dataManager.loadCompanyReps("data/companyreps.txt");
         dataManager.loadInternships("data/internships.txt");
         dataManager.loadApplications("data/applications.txt");
+        dataManager.loadActivityLogs("data/activitylogs.txt");
     }
 
     private void createUI() {
@@ -161,10 +162,10 @@ public class LoginFrame extends JFrame {
                 openDashboard();
                 break;
             case "INVALID_USER":
-                JOptionPane.showMessageDialog(this, "Login failed. User ID not found.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Invalid Id", "Login Error", JOptionPane.ERROR_MESSAGE);
                 break;
             case "INVALID_PASSWORD":
-                JOptionPane.showMessageDialog(this, "Login failed. Invalid password.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Incorrect password", "Login Error", JOptionPane.ERROR_MESSAGE);
                 break;
             case "NOT_APPROVED":
                 JOptionPane.showMessageDialog(this, "Your company registration is pending approval.", "Login Error", JOptionPane.ERROR_MESSAGE);
@@ -188,6 +189,7 @@ public class LoginFrame extends JFrame {
         CompanyRepresentative rep = new CompanyRepresentative(email, name, password, company, dept, position);
         dataManager.addUser(rep);
         dataManager.saveAllData("data/students.txt", "data/staff.txt", "data/companyreps.txt", "data/internships.txt", "data/applications.txt");
+        dataManager.saveActivityLogs("data/activitylogs.txt");
         JOptionPane.showMessageDialog(this, "Registration submitted for approval.", "Success", JOptionPane.INFORMATION_MESSAGE);
         tabbedPane.setSelectedIndex(0);
     }
@@ -244,6 +246,7 @@ public class LoginFrame extends JFrame {
 
             if (authManager.resetPassword(userIDField.getText(), newPassword)) {
                 dataManager.saveAllData("data/students.txt", "data/staff.txt", "data/companyreps.txt", "data/internships.txt", "data/applications.txt");
+                dataManager.saveActivityLogs("data/activitylogs.txt");
                 JOptionPane.showMessageDialog(dialog, "Password reset successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 dialog.dispose();
             } else {

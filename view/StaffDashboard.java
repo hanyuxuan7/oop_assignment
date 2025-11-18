@@ -50,6 +50,7 @@ public class StaffDashboard extends JFrame {
         contentPanel.add(createInternshipsPanel(), "internships");
         contentPanel.add(createWithdrawalsPanel(), "withdrawals");
         contentPanel.add(createReportsPanel(), "reports");
+        contentPanel.add(createActivityLogPanel(), "activitylog");
         contentPanel.add(createChangePasswordPanel(), "password");
 
         mainPanel.add(contentPanel, BorderLayout.CENTER);
@@ -90,6 +91,7 @@ public class StaffDashboard extends JFrame {
             "Approve/Reject Internship Opportunities",
             "Manage Withdrawal Requests",
             "Generate Reports",
+            "View Activity Log",
             "Change Password"
         };
 
@@ -98,6 +100,7 @@ public class StaffDashboard extends JFrame {
             "internships",
             "withdrawals",
             "reports",
+            "activitylog",
             "password"
         };
 
@@ -165,7 +168,7 @@ public class StaffDashboard extends JFrame {
                 int row = table.getSelectedRow();
                 if (row >= 0) {
                     String email = (String) model.getValueAt(row, 1);
-                    if (staffManager.approveCompanyRepRegistration(email)) {
+                    if (staffManager.approveCompanyRepRegistration(email, staff.getUserID())) {
                         JOptionPane.showMessageDialog(this, "Registration approved.", "Success", JOptionPane.INFORMATION_MESSAGE);
                         model.removeRow(row);
                     }
@@ -178,7 +181,7 @@ public class StaffDashboard extends JFrame {
                 int row = table.getSelectedRow();
                 if (row >= 0) {
                     String email = (String) model.getValueAt(row, 1);
-                    if (staffManager.rejectCompanyRepRegistration(email)) {
+                    if (staffManager.rejectCompanyRepRegistration(email, staff.getUserID())) {
                         JOptionPane.showMessageDialog(this, "Registration rejected.", "Success", JOptionPane.INFORMATION_MESSAGE);
                         model.removeRow(row);
                     }
@@ -243,7 +246,7 @@ public class StaffDashboard extends JFrame {
                 int row = table.getSelectedRow();
                 if (row >= 0) {
                     String internshipID = (String) model.getValueAt(row, 0);
-                    if (staffManager.approveInternship(internshipID)) {
+                    if (staffManager.approveInternship(internshipID, staff.getUserID())) {
                         JOptionPane.showMessageDialog(this, "Internship approved.", "Success", JOptionPane.INFORMATION_MESSAGE);
                         model.removeRow(row);
                     }
@@ -256,7 +259,7 @@ public class StaffDashboard extends JFrame {
                 int row = table.getSelectedRow();
                 if (row >= 0) {
                     String internshipID = (String) model.getValueAt(row, 0);
-                    if (staffManager.rejectInternship(internshipID)) {
+                    if (staffManager.rejectInternship(internshipID, staff.getUserID())) {
                         JOptionPane.showMessageDialog(this, "Internship rejected.", "Success", JOptionPane.INFORMATION_MESSAGE);
                         model.removeRow(row);
                     }
@@ -324,7 +327,7 @@ public class StaffDashboard extends JFrame {
                 int row = table.getSelectedRow();
                 if (row >= 0) {
                     String applicationID = (String) model.getValueAt(row, 0);
-                    if (staffManager.approveWithdrawal(applicationID)) {
+                    if (staffManager.approveWithdrawal(applicationID, staff.getUserID())) {
                         JOptionPane.showMessageDialog(this, "Withdrawal approved.", "Success", JOptionPane.INFORMATION_MESSAGE);
                         model.removeRow(row);
                     }
@@ -337,7 +340,7 @@ public class StaffDashboard extends JFrame {
                 int row = table.getSelectedRow();
                 if (row >= 0) {
                     String applicationID = (String) model.getValueAt(row, 0);
-                    if (staffManager.rejectWithdrawal(applicationID)) {
+                    if (staffManager.rejectWithdrawal(applicationID, staff.getUserID())) {
                         JOptionPane.showMessageDialog(this, "Withdrawal rejected.", "Success", JOptionPane.INFORMATION_MESSAGE);
                         model.removeRow(row);
                     }
@@ -429,6 +432,49 @@ public class StaffDashboard extends JFrame {
         return panel;
     }
 
+    private JPanel createActivityLogPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> cardLayout.show(contentPanel, "menu"));
+        JPanel topPanel = new JPanel();
+        topPanel.add(backButton);
+        panel.add(topPanel, BorderLayout.NORTH);
+
+        List<ActivityLog> activityLogs = dataManager.getAllActivityLogs();
+
+        if (activityLogs.isEmpty()) {
+            JLabel noDataLabel = new JLabel("No activities recorded.");
+            noDataLabel.setHorizontalAlignment(JLabel.CENTER);
+            panel.add(noDataLabel, BorderLayout.CENTER);
+        } else {
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Timestamp");
+            model.addColumn("User ID");
+            model.addColumn("User Type");
+            model.addColumn("Activity");
+            model.addColumn("Related Entity");
+
+            for (ActivityLog log : activityLogs) {
+                model.addRow(new Object[]{
+                    log.getTimestamp(),
+                    log.getUserID(),
+                    log.getUserType(),
+                    log.getActivityDescription(),
+                    log.getRelatedEntity()
+                });
+            }
+
+            JTable table = new JTable(model);
+            table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            JScrollPane scrollPane = new JScrollPane(table);
+            panel.add(scrollPane, BorderLayout.CENTER);
+        }
+
+        return panel;
+    }
+
     private JPanel createChangePasswordPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -486,8 +532,9 @@ public class StaffDashboard extends JFrame {
 
         if (authManager.changePassword(oldPassword, newPassword)) {
             dataManager.saveAllData("data/students.txt", "data/staff.txt", "data/companyreps.txt", "data/internships.txt", "data/applications.txt");
-            JOptionPane.showMessageDialog(this, "Password changed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            cardLayout.show(contentPanel, "menu");
+            dataManager.saveActivityLogs("data/activitylogs.txt");
+            JOptionPane.showMessageDialog(this, "Password changed successfully! Please log in again.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            logout();
         } else {
             JOptionPane.showMessageDialog(this, "Failed to change password. Old password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -496,6 +543,7 @@ public class StaffDashboard extends JFrame {
     private void logout() {
         authManager.logout();
         dataManager.saveAllData("data/students.txt", "data/staff.txt", "data/companyreps.txt", "data/internships.txt", "data/applications.txt");
+        dataManager.saveActivityLogs("data/activitylogs.txt");
         this.dispose();
         LoginFrame loginFrame = new LoginFrame();
         loginFrame.setVisible(true);

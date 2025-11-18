@@ -1,1 +1,2 @@
 INT1763278372662|DSO|DSO|Basic|CS|2020-01-01|2025-01-01|Approved|DSO|dso@gmail.com|2|0|false
+INT1763459122070|science & tech|internship|Basic|CSC|2025-11-18|2025-11-28|Approved|DSO|dso@gmail.com|9|0|true

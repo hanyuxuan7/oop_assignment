@@ -213,15 +213,16 @@ public class StudentDashboard extends JFrame {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        addDetailField(panel, "Title:", internship.getTitle(), gbc, 0);
-        addDetailField(panel, "Company:", internship.getCompanyName(), gbc, 1);
-        addDetailField(panel, "Level:", internship.getLevel(), gbc, 2);
-        addDetailField(panel, "Preferred Major:", internship.getPreferredMajor(), gbc, 3);
-        addDetailField(panel, "Opening Date:", internship.getOpeningDate().toString(), gbc, 4);
-        addDetailField(panel, "Closing Date:", internship.getClosingDate().toString(), gbc, 5);
-        addDetailField(panel, "Available Slots:", String.valueOf(internship.getNumSlots() - internship.getFilledSlots()), gbc, 6);
+        addDetailField(panel, "Internship ID:", internship.getInternshipID(), gbc, 0);
+        addDetailField(panel, "Title:", internship.getTitle(), gbc, 1);
+        addDetailField(panel, "Company:", internship.getCompanyName(), gbc, 2);
+        addDetailField(panel, "Level:", internship.getLevel(), gbc, 3);
+        addDetailField(panel, "Preferred Major:", internship.getPreferredMajor(), gbc, 4);
+        addDetailField(panel, "Opening Date:", internship.getOpeningDate().toString(), gbc, 5);
+        addDetailField(panel, "Closing Date:", internship.getClosingDate().toString(), gbc, 6);
+        addDetailField(panel, "Available Slots:", String.valueOf(internship.getNumSlots() - internship.getFilledSlots()), gbc, 7);
 
-        gbc.gridy = 7;
+        gbc.gridy = 8;
         gbc.gridwidth = 2;
         JTextArea descriptionArea = new JTextArea(internship.getDescription(), 5, 30);
         descriptionArea.setLineWrap(true);
@@ -230,7 +231,7 @@ public class StudentDashboard extends JFrame {
         panel.add(new JScrollPane(descriptionArea), gbc);
 
         JButton closeButton = new JButton("Close");
-        gbc.gridy = 8;
+        gbc.gridy = 9;
         gbc.gridwidth = 2;
         closeButton.addActionListener(e -> dialog.dispose());
         panel.add(closeButton, gbc);
@@ -268,6 +269,7 @@ public class StudentDashboard extends JFrame {
         } else {
             DefaultTableModel model = new DefaultTableModel();
             model.addColumn("Application ID");
+            model.addColumn("Internship ID");
             model.addColumn("Internship Title");
             model.addColumn("Status");
             model.addColumn("Withdrawal Status");
@@ -279,6 +281,7 @@ public class StudentDashboard extends JFrame {
 
                 model.addRow(new Object[]{
                     app.getApplicationID(),
+                    app.getInternshipID(),
                     internshipTitle,
                     app.getStatus(),
                     withdrawalStatus
@@ -388,8 +391,8 @@ public class StudentDashboard extends JFrame {
 
         if (authManager.changePassword(oldPassword, newPassword)) {
             dataManager.saveAllData("data/students.txt", "data/staff.txt", "data/companyreps.txt", "data/internships.txt", "data/applications.txt");
-            JOptionPane.showMessageDialog(this, "Password changed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            cardLayout.show(contentPanel, "menu");
+            JOptionPane.showMessageDialog(this, "Password changed successfully! Please log in again.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            logout();
         } else {
             JOptionPane.showMessageDialog(this, "Failed to change password. Old password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
         }

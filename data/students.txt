@@ -1,4 +1,4 @@
-U2300001A|John Doe|password|1|CSC
+U2300001A|John Doe|Student1|1|CSC
 U2300002B|Jane Smith|password|2|EEE
 U2300003C|Michael Chen|password|3|MAE
 U2300004D|Sarah Johnson|password|4|CSC

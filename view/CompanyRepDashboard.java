@@ -350,7 +350,7 @@ public class CompanyRepDashboard extends JFrame {
                 String major = majorField.getText().trim().isEmpty() ? null : majorField.getText().trim();
                 int slots = (Integer) slotsSpinner.getValue();
 
-                if (companyRepManager.updateInternshipDetails(selected.getInternshipID(), title, description, level, major, null, null, slots)) {
+                if (companyRepManager.updateInternshipDetails(selected.getInternshipID(), title, description, level, major, null, null, slots, rep.getUserID())) {
                     JOptionPane.showMessageDialog(this, "Internship updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "Failed to update internship.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -437,13 +437,13 @@ public class CompanyRepDashboard extends JFrame {
                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
 
             if (choice == 0) {
-                if (companyRepManager.approveApplication(applicationID)) {
+                if (companyRepManager.approveApplication(applicationID, rep.getUserID())) {
                     JOptionPane.showMessageDialog(this, "Application approved.", "Success", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "Failed to approve application.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else if (choice == 1) {
-                if (companyRepManager.rejectApplication(applicationID)) {
+                if (companyRepManager.rejectApplication(applicationID, rep.getUserID())) {
                     JOptionPane.showMessageDialog(this, "Application rejected.", "Success", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "Failed to reject application.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -495,7 +495,7 @@ public class CompanyRepDashboard extends JFrame {
                 int row = table.getSelectedRow();
                 if (row >= 0) {
                     String internshipID = (String) model.getValueAt(row, 0);
-                    companyRepManager.toggleInternshipVisibility(internshipID);
+                    companyRepManager.toggleInternshipVisibility(internshipID, rep.getUserID());
                     String newVisibility = internships.get(row).isVisible() ? "Hidden" : "Visible";
                     model.setValueAt(newVisibility, row, 3);
                     JOptionPane.showMessageDialog(this, "Visibility toggled to: " + newVisibility, "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -549,8 +549,9 @@ public class CompanyRepDashboard extends JFrame {
 
             if (authManager.changePassword(oldPassword, newPassword)) {
                 dataManager.saveAllData("data/students.txt", "data/staff.txt", "data/companyreps.txt", "data/internships.txt", "data/applications.txt");
-                JOptionPane.showMessageDialog(this, "Password changed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                cardLayout.show(contentPanel, "menu");
+                dataManager.saveActivityLogs("data/activitylogs.txt");
+                JOptionPane.showMessageDialog(this, "Password changed successfully! Please log in again.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                logout();
             } else {
                 JOptionPane.showMessageDialog(this, "Failed to change password. Old password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -588,6 +589,7 @@ public class CompanyRepDashboard extends JFrame {
     private void logout() {
         authManager.logout();
         dataManager.saveAllData("data/students.txt", "data/staff.txt", "data/companyreps.txt", "data/internships.txt", "data/applications.txt");
+        dataManager.saveActivityLogs("data/activitylogs.txt");
         this.dispose();
         LoginFrame loginFrame = new LoginFrame();
         loginFrame.setVisible(true);
