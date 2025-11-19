@@ -1,6 +1,7 @@
-INT1763489769701|Software Engineer|build full stack applications and projects|Advanced|Computer Science|2025-09-09|2026-02-01|Approved|DSO|janelim@dso.gov.sg|10|0|false
-INT1763489184657|EEE Intern|Specializing in power|Intermediate|Electrical & Electronics Engineering|2025-09-09|2026-01-01|Approved|DSO|janelim@dso.gov.sg|2|0|true
+INT1763489769701|Software Engineer|build full stack applications and projects|Advanced|Computer Science|2025-09-09|2026-02-01|Approved|DSO|janelim@dso.gov.sg|10|0|true
+INT1763489184657|EEE Intern|Specializing in power|Intermediate|Electrical & Electronics Engineering|2025-09-09|2026-01-01|Approved|DSO|janelim@dso.gov.sg|2|1|true
 INT1763488335199|Computer Architect Intern|Help manage computer network and infrastructure|Intermediate|Computer Engineering|2025-09-01|2025-12-20|Approved|Apple|ellen@apple.com|2|0|true
+INT1763542328743|Internet Intern|Electrical expertise needed|Basic|Electrical & Electronics Engineering|2025-10-10|2026-01-03|Approved|DSO|janelim@dso.gov.sg|2|0|true
 INT1763486913587|Code Debugging Intern|Help to debug code|Basic|Computer Science|2025-11-01|2025-11-30|Approved|Apple|ellen@apple.com|5|1|true
 INT1763486760547|Software Engineering|Help code new applications|Intermediate|Computer Science|2025-11-20|2025-11-30|Approved|Apple|ellen@apple.com|10|0|true
 INT1763487002104|Personal Assistant for CEO|Help Apple CEO with simple tasks like coffee runs|Basic|Business|2025-10-10|2025-12-10|Rejected|Apple|ellen@apple.com|1|0|false

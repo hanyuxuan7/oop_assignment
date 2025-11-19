@@ -1,0 +1,148 @@
+@startuml Internship_Application_Review_Process
+
+!theme plain
+skinparam sequenceActorBackgroundColor #E8F4F8
+skinparam sequenceParticipantBackgroundColor #F0F0F0
+skinparam sequenceParticipantBorderColor #333333
+skinparam sequenceArrowColor #333333
+skinparam sequenceDividerBackgroundColor #E8E8E8
+
+actor Student
+participant "StudentManager" as SM
+participant "DataManager" as DM
+participant "Internship" as INT
+participant "CompanyRepresentative\nManager" as CRM
+participant "CompanyRepresentative\nUI" as UI
+participant "ActivityLog" as AL
+
+note over Student, AL
+  Flow: Company Representative's Role in Internship Management and Application Process
+  Focus: Student Application Review Process
+end note
+
+== Phase 1: Student Application ==
+Student -> SM: applyForInternship(studentID, internshipID)
+activate SM
+SM -> DM: getStudent(studentID)
+activate DM
+DM --> SM: student
+deactivate DM
+
+SM -> DM: getInternship(internshipID)
+activate DM
+DM --> SM: internship
+deactivate DM
+
+SM -> INT: canApply(currentDate)
+activate INT
+INT --> SM: true/false
+deactivate INT
+
+alt Application Valid
+  SM -> DM: addApplication(application)
+  activate DM
+  DM --> SM: success
+  deactivate DM
+  
+  SM -> INT: addApplication(application)
+  activate INT
+  INT --> SM: success
+  deactivate INT
+  
+  SM --> Student: Application Submitted Successfully
+else Application Invalid
+  SM --> Student: Application Failed
+end
+
+deactivate SM
+
+== Phase 2: Company Rep Reviews Applications ==
+
+UI -> CRM: getApplicationsForInternship(internshipID)
+activate CRM
+CRM -> DM: getInternship(internshipID)
+activate DM
+DM --> CRM: internship
+deactivate DM
+
+CRM -> INT: getApplications()
+activate INT
+INT --> CRM: list of applications
+deactivate INT
+
+CRM --> UI: Display Applications
+deactivate CRM
+
+UI -> UI: Display Application Details\n(Student Name, Major, Year)
+
+== Phase 3: Application Approval/Rejection ==
+
+alt Approve Application
+  UI -> CRM: approveApplication(applicationID, repID)
+  activate CRM
+  CRM -> DM: getApplication(applicationID)
+  activate DM
+  DM --> CRM: application
+  deactivate DM
+  
+  alt Status is Pending
+    CRM -> DM: updateApplication(applicationID, "Successful")
+    activate DM
+    DM --> CRM: success
+    deactivate DM
+    
+    CRM -> AL: addActivityLog(action: "Approved application")
+    activate AL
+    AL --> CRM: log recorded
+    deactivate AL
+    
+    CRM --> UI: Approval Successful
+  else Status Not Pending
+    CRM --> UI: Cannot Approve (Invalid Status)
+  end
+  deactivate CRM
+
+else Reject Application
+  UI -> CRM: rejectApplication(applicationID, repID)
+  activate CRM
+  CRM -> DM: getApplication(applicationID)
+  activate DM
+  DM --> CRM: application
+  deactivate DM
+  
+  alt Status is Pending
+    CRM -> DM: updateApplication(applicationID, "Unsuccessful")
+    activate DM
+    DM --> CRM: success
+    deactivate DM
+    
+    CRM -> AL: addActivityLog(action: "Rejected application")
+    activate AL
+    AL --> CRM: log recorded
+    deactivate AL
+    
+    CRM --> UI: Rejection Successful
+  else Status Not Pending
+    CRM --> UI: Cannot Reject (Invalid Status)
+  end
+  deactivate CRM
+
+end
+
+== Phase 4: Student Views Application Status ==
+
+Student -> SM: getStudentApplications(studentID)
+activate SM
+SM -> DM: getStudent(studentID)
+activate DM
+DM --> SM: student
+deactivate DM
+
+SM -> Student: Display Updated Applications\n(Status: Successful/Unsuccessful)
+deactivate SM
+
+note over Student, AL
+  Application status is now updated based on Company Rep's decision
+end note
+
+@enduml
