@@ -1,0 +1,3 @@
+tan002|Mr. Tan Boon Kiat|TanBoonKiat|Career Centre|tan.boon.kiat@careercenter.edu.sg
+lee003|Ms. Lee Mei Ling|password|Career Centre|lee.mei.ling@careercenter.edu.sg
+sng001|Dr. Sng Hui Lin|password|Career Centre|sng.hui.lin@careercenter.edu.sg
