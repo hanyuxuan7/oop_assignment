@@ -10,7 +10,6 @@ import java.util.List;
  * Manager for internship discovery operations for students using repository pattern.
  * Handles retrieving available internships based on student eligibility.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class StudentInternshipDiscoveryManager {

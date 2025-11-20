@@ -7,7 +7,6 @@ import java.util.Collection;
  * Repository interface for accessing and managing internship data.
  * Defines operations for CRUD operations on Internship entities.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public interface InternshipRepository {

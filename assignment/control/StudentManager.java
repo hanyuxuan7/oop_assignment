@@ -9,7 +9,6 @@ import java.time.LocalDate;
  * Manager class for student-related operations including internship discovery and application management.
  * Handles student interactions with internships, application processing, and placement confirmation.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class StudentManager {

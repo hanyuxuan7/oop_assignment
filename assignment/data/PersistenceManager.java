@@ -4,7 +4,6 @@ package data;
  * Interface for managing data persistence operations.
  * Defines methods for loading and saving various entity data.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public interface PersistenceManager {

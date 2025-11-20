@@ -9,7 +9,6 @@ import java.util.List;
  * and accept internship placements. They have restrictions on which internship levels
  * they can apply for based on their year of study.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class Student extends User {

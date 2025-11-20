@@ -10,7 +10,6 @@ import java.util.List;
  * and manages applications from students. Each internship has a limited number of slots
  * and can be opened or closed based on its status.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class Internship {

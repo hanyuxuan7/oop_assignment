@@ -5,7 +5,6 @@ package entity;
  * All user types (Student, CareerCenterStaff, CompanyRepresentative) extend this class.
  * Provides common functionality for user authentication and basic user information management.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public abstract class User {

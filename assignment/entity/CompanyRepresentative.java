@@ -10,7 +10,6 @@ import java.util.List;
  * approved by the career center staff before they can post internships.
  * They can create up to 5 internship postings.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class CompanyRepresentative extends User {

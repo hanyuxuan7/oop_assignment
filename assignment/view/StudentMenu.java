@@ -10,7 +10,6 @@ import control.*;
  * User interface menu for student users.
  * Provides students with options to browse internships, submit applications, and manage their placements.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class StudentMenu {

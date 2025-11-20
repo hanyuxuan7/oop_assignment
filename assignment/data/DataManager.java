@@ -6,6 +6,13 @@ import java.time.LocalDateTime;
 import java.util.*;
 import entity.*;
 
+/**
+ * Central data management class responsible for all data storage, retrieval, and persistence.
+ * Manages collections of users, internships, applications, and activity logs.
+ * Provides methods to load data from files and retrieve data by ID or other criteria.
+ *
+ * @version 1.0
+ */
 public class DataManager {
     private Map<String, User> users;
     private Map<String, Internship> internships;
@@ -15,6 +22,9 @@ public class DataManager {
     private Map<String, CareerCenterStaff> staffMembers;
     private List<ActivityLog> activityLogs;
 
+    /**
+     * Constructs a new DataManager, initializing all data storage maps and lists.
+     */
     public DataManager() {
         this.users = new HashMap<>();
         this.internships = new HashMap<>();
@@ -25,6 +35,12 @@ public class DataManager {
         this.activityLogs = new ArrayList<>();
     }
 
+    /**
+     * Loads student data from the specified file path.
+     * Each line should contain pipe-separated student information.
+     *
+     * @param filePath the path to the students data file
+     */
     public void loadStudents(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -58,6 +74,12 @@ public class DataManager {
         }
     }
 
+    /**
+     * Loads career center staff data from the specified file path.
+     * Each line should contain pipe-separated staff information.
+     *
+     * @param filePath the path to the staff data file
+     */
     public void loadStaff(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -89,6 +111,12 @@ public class DataManager {
         }
     }
 
+    /**
+     * Loads company representative data from the specified file path.
+     * Each line should contain pipe-separated company representative information.
+     *
+     * @param filePath the path to the company representatives data file
+     */
     public void loadCompanyReps(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -115,6 +143,12 @@ public class DataManager {
         }
     }
 
+    /**
+     * Loads internship data from the specified file path.
+     * Each line should contain pipe-separated internship information.
+     *
+     * @param filePath the path to the internships data file
+     */
     public void loadInternships(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -149,6 +183,10 @@ public class DataManager {
         }
     }
 
+    /**
+     * Links internships to their respective company representatives.
+     * This method establishes the relationship between internships and their managing representatives.
+     */
     public void linkInternshipsToReps() {
         for (Internship internship : internships.values()) {
             String repInCharge = internship.getRepInCharge();
@@ -161,6 +199,12 @@ public class DataManager {
         }
     }
 
+    /**
+     * Loads internship application data from the specified file path.
+     * Each line should contain pipe-separated application information.
+     *
+     * @param filePath the path to the applications data file
+     */
     public void loadApplications(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -200,6 +244,12 @@ public class DataManager {
         }
     }
 
+    /**
+     * Adds a user to the data storage.
+     * The user is stored in the appropriate specific map based on their type.
+     *
+     * @param user the user to add
+     */
     public void addUser(User user) {
         users.put(user.getUserID(), user);
         if (user instanceof Student) {
@@ -211,67 +261,153 @@ public class DataManager {
         }
     }
 
+    /**
+     * Retrieves a user by their ID.
+     *
+     * @param userID the unique identifier of the user
+     * @return the user object, or null if not found
+     */
     public User getUser(String userID) {
         return users.get(userID);
     }
 
+    /**
+     * Retrieves a student by their ID.
+     *
+     * @param studentID the unique identifier of the student
+     * @return the student object, or null if not found
+     */
     public Student getStudent(String studentID) {
         return students.get(studentID);
     }
 
+    /**
+     * Retrieves a company representative by their ID.
+     *
+     * @param repID the unique identifier of the company representative
+     * @return the company representative object, or null if not found
+     */
     public CompanyRepresentative getCompanyRep(String repID) {
         return companyReps.get(repID);
     }
 
+    /**
+     * Retrieves career center staff by their ID.
+     *
+     * @param staffID the unique identifier of the staff member
+     * @return the staff object, or null if not found
+     */
     public CareerCenterStaff getStaff(String staffID) {
         return staffMembers.get(staffID);
     }
 
+    /**
+     * Retrieves all users from the data storage.
+     *
+     * @return a collection of all users
+     */
     public Collection<User> getAllUsers() {
         return users.values();
     }
 
+    /**
+     * Retrieves all students from the data storage.
+     *
+     * @return a collection of all students
+     */
     public Collection<Student> getAllStudents() {
         return students.values();
     }
 
+    /**
+     * Retrieves all company representatives from the data storage.
+     *
+     * @return a collection of all company representatives
+     */
     public Collection<CompanyRepresentative> getAllCompanyReps() {
         return companyReps.values();
     }
 
+    /**
+     * Retrieves all career center staff members from the data storage.
+     *
+     * @return a collection of all staff members
+     */
     public Collection<CareerCenterStaff> getAllStaff() {
         return staffMembers.values();
     }
 
+    /**
+     * Adds an internship to the data storage.
+     *
+     * @param internship the internship to add
+     */
     public void addInternship(Internship internship) {
         internships.put(internship.getInternshipID(), internship);
     }
 
+    /**
+     * Retrieves an internship by its ID.
+     *
+     * @param internshipID the unique identifier of the internship
+     * @return the internship object, or null if not found
+     */
     public Internship getInternship(String internshipID) {
         return internships.get(internshipID);
     }
 
+    /**
+     * Retrieves all internships from the data storage.
+     *
+     * @return a collection of all internships
+     */
     public Collection<Internship> getAllInternships() {
         return internships.values();
     }
 
+    /**
+     * Adds an internship application to the data storage.
+     *
+     * @param application the application to add
+     */
     public void addApplication(InternshipApplication application) {
         applications.put(application.getApplicationID(), application);
     }
 
+    /**
+     * Retrieves an internship application by its ID.
+     *
+     * @param applicationID the unique identifier of the application
+     * @return the application object, or null if not found
+     */
     public InternshipApplication getApplication(String applicationID) {
         return applications.get(applicationID);
     }
 
+    /**
+     * Retrieves all internship applications from the data storage.
+     *
+     * @return a collection of all applications
+     */
     public Collection<InternshipApplication> getAllApplications() {
         return applications.values();
     }
 
+    /**
+     * Removes a company representative registration by their ID.
+     *
+     * @param repID the unique identifier of the company representative to remove
+     */
     public void removeCompanyRepRegistration(String repID) {
         companyReps.remove(repID);
         users.remove(repID);
     }
 
+    /**
+     * Saves company representative data to the specified file path.
+     *
+     * @param filePath the path where company representative data should be saved
+     */
     public void saveCompanyReps(String filePath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             for (CompanyRepresentative rep : companyReps.values()) {
@@ -286,6 +422,11 @@ public class DataManager {
         }
     }
 
+    /**
+     * Saves internship data to the specified file path.
+     *
+     * @param filePath the path where internship data should be saved
+     */
     public void saveInternships(String filePath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             for (Internship internship : internships.values()) {
@@ -304,6 +445,11 @@ public class DataManager {
         }
     }
 
+    /**
+     * Saves internship application data to the specified file path.
+     *
+     * @param filePath the path where application data should be saved
+     */
     public void saveApplications(String filePath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             for (InternshipApplication app : applications.values()) {
@@ -319,6 +465,11 @@ public class DataManager {
         }
     }
 
+    /**
+     * Saves student data to the specified file path.
+     *
+     * @param filePath the path where student data should be saved
+     */
     public void saveStudents(String filePath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             for (Student student : students.values()) {
@@ -333,6 +484,11 @@ public class DataManager {
         }
     }
 
+    /**
+     * Saves career center staff data to the specified file path.
+     *
+     * @param filePath the path where staff data should be saved
+     */
     public void saveStaff(String filePath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             for (CareerCenterStaff staff : staffMembers.values()) {
@@ -346,14 +502,30 @@ public class DataManager {
         }
     }
 
+    /**
+     * Adds an activity log entry to the data storage.
+     *
+     * @param log the activity log to add
+     */
     public void addActivityLog(ActivityLog log) {
         activityLogs.add(log);
     }
 
+    /**
+     * Retrieves all activity logs from the data storage.
+     *
+     * @return a list of all activity logs
+     */
     public List<ActivityLog> getAllActivityLogs() {
         return new ArrayList<>(activityLogs);
     }
 
+    /**
+     * Loads activity log data from the specified file path.
+     * Each line should contain pipe-separated activity log information.
+     *
+     * @param filePath the path to the activity logs data file
+     */
     public void loadActivityLogs(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -377,6 +549,11 @@ public class DataManager {
         }
     }
 
+    /**
+     * Saves activity log data to the specified file path.
+     *
+     * @param filePath the path where activity logs should be saved
+     */
     public void saveActivityLogs(String filePath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             for (ActivityLog log : activityLogs) {
@@ -391,6 +568,16 @@ public class DataManager {
         }
     }
 
+    /**
+     * Saves all data to their respective file paths.
+     * This is a convenience method that saves students, staff, company representatives, internships, and applications.
+     *
+     * @param studentsPath the path where student data should be saved
+     * @param staffPath the path where staff data should be saved
+     * @param companyRepsPath the path where company representative data should be saved
+     * @param internshipsPath the path where internship data should be saved
+     * @param applicationsPath the path where application data should be saved
+     */
     public void saveAllData(String studentsPath, String staffPath, String companyRepsPath, String internshipsPath, String applicationsPath) {
         saveStudents(studentsPath);
         saveStaff(staffPath);

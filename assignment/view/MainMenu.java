@@ -10,7 +10,6 @@ import control.*;
  * Provides the primary user interface for authentication and role-based navigation.
  * Routes users to appropriate menus based on their role and login status.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class MainMenu {

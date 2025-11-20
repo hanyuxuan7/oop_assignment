@@ -4,7 +4,6 @@ package data;
  * Configuration class for managing file paths used by the system.
  * Centralizes all file path configuration for data storage.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class FilePathConfiguration {

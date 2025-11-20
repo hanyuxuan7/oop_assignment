@@ -7,7 +7,6 @@ import entity.*;
  * Provides methods to check user roles and permissions within the system.
  * Determines what actions each user type is allowed to perform.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class AuthorizationService {

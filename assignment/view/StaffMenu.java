@@ -10,7 +10,6 @@ import control.*;
  * User interface menu for career center staff users.
  * Provides staff with options to review registrations, approve internships, and review applications.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class StaffMenu {

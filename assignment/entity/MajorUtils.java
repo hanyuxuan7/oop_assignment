@@ -9,7 +9,6 @@ import java.util.Map;
  * as well as validating and retrieving all available majors.
  * This class acts as a centralized reference for all supported academic disciplines.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class MajorUtils {

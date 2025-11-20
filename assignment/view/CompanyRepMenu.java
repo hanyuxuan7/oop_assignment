@@ -12,7 +12,6 @@ import control.*;
  * User interface menu for company representative users.
  * Provides representatives with options to create internships, review applications, and manage postings.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class CompanyRepMenu {

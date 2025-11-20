@@ -8,7 +8,6 @@ import java.util.UUID;
  * Each log entry captures details about an activity performed by a user, including the timestamp,
  * activity description, and related entity information for audit trail purposes.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class ActivityLog {

@@ -6,7 +6,6 @@ package entity;
  * Each application links a student to an internship opportunity and manages
  * the application lifecycle from submission to confirmation or rejection.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class InternshipApplication {

@@ -8,7 +8,6 @@ import data.UserRepository;
  * Manages user login, logout, password changes, and current user session tracking.
  * Validates credentials and enforces business rules such as company representative approval status.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class AuthenticationService {

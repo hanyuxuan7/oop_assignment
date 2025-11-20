@@ -10,7 +10,6 @@ import java.time.LocalDate;
  * Manager for student application operations using repository pattern.
  * Handles application submission, withdrawal, and acceptance.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class StudentApplicationManager {

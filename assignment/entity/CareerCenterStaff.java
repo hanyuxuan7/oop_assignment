@@ -6,7 +6,6 @@ package entity;
  * student applications, and managing the overall internship program.
  * They work within a specific department and can be contacted via email.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class CareerCenterStaff extends User {

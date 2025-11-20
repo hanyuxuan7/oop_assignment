@@ -8,7 +8,6 @@ import java.util.List;
  * allowing for flexible permission and responsibility management.
  * Each interface represents a specific capability that can be implemented by relevant classes.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class RoleSpecificInterfaces {

@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 /**
  * Manager for filtering and sorting internship data based on various criteria.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class FilterManager {

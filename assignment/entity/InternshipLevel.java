@@ -7,7 +7,6 @@ package entity;
  * INTERMEDIATE - Intermediate-level internship suitable for Year 2-3 students
  * ADVANCED - Advanced-level internship suitable for Year 3+ students
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public enum InternshipLevel {

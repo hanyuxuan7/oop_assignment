@@ -7,7 +7,6 @@ import java.util.Collection;
  * Repository interface for accessing and managing student data.
  * Defines operations for CRUD operations on Student entities.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public interface StudentRepository {

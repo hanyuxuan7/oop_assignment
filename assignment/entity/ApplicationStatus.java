@@ -8,7 +8,6 @@ package entity;
  * UNSUCCESSFUL - Application has been rejected by career center staff
  * WITHDRAWN - Student has withdrawn the application
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public enum ApplicationStatus {

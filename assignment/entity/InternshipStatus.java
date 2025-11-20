@@ -8,7 +8,6 @@ package entity;
  * REJECTED - Internship posting has been rejected
  * FILLED - Internship posting has been filled with a student
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public enum InternshipStatus {

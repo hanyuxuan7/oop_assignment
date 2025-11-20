@@ -7,7 +7,6 @@ import view.MainMenu;
  * Initializes and starts the main menu interface for user interaction with the system.
  * This application manages internship postings, student applications, and career center operations.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class InternshipApp {

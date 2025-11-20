@@ -7,7 +7,6 @@ import data.PersistenceManager;
  * Provides methods to save different types of data to persistent storage.
  * Acts as a facade to the PersistenceManager for data saving operations.
  *
- * @author NTU Career Services Development Team
  * @version 1.0
  */
 public class DataPersistenceService {
