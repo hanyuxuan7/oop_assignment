@@ -1,0 +1,8 @@
+{
+  "editor.wordWrap": "on",
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  "editor.codeActions.triggerOnFocusChange": false,
+  "editor.formatOnSave": true,
+  "css.format.spaceAroundSelectorSeparator": true,
+  "notebook.defaultFormatter": "vscjava.vscode-java-debug"
+}
