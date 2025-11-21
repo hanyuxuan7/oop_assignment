@@ -1,3 +1,0 @@
-260dce76-76e3-4e27-b8c0-fd23db3e4020|janelim@dso.gov.sg|CompanyRepresentative|Created internship: Internet Intern|2025-11-19T16:52:08.766780|INT1763542328743
-90101aa2-cf67-4dd1-9cce-4b97c7f641b8|janelim@dso.gov.sg|CompanyRepresentative|Toggled internship visibility to visible|2025-11-19T16:53:45.943192|INT1763542328743
-668171a0-4d60-4d6c-b711-912218a01a2e|janelim@dso.gov.sg|CompanyRepresentative|Approved application|2025-11-19T16:55:53.237410|APP1763542473401
