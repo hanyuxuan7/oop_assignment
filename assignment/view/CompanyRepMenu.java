@@ -4,7 +4,6 @@ import java.util.Scanner;
 import java.util.List;
 import java.time.LocalDate;
 import entity.*;
-import entity.InternshipLevel;
 import data.DataManager;
 import control.*;
 
