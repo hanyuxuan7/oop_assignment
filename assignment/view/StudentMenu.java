@@ -58,7 +58,9 @@ public class StudentMenu {
                     requestWithdrawal(student);
                     break;
                 case "5":
-                    changePassword();
+                    if (changePassword()) {
+                        inMenu = false;
+                    }
                     break;
                 case "6":
                     authManager.logout();
@@ -210,28 +212,33 @@ public class StudentMenu {
         }
     }
 
-    private void changePassword() {
+    private boolean changePassword() {
         String oldPassword = getValidatedInput("Enter old password: ");
         String newPassword = getValidatedInput("Enter new password: ");
         String confirmPassword = getValidatedInput("Confirm new password: ");
 
         if (!newPassword.equals(confirmPassword)) {
             System.out.println("New passwords do not match.");
-            return;
+            return false;
         }
 
         if (oldPassword.equals(newPassword)) {
             System.out.println("New password must be different from the old password.");
-            return;
+            return false;
         }
 
         if (authManager.changePassword(oldPassword, newPassword)) {
+            User currentUser = authManager.getCurrentUser();
+            ActivityLog log = new ActivityLog(currentUser.getUserID(), "Student", "Changed password", currentUser.getUserID());
+            dataManager.addActivityLog(log);
             dataManager.saveAllData("data/students.txt", "data/staff.txt", "data/companyreps.txt", "data/internships.txt", "data/applications.txt");
+            dataManager.saveActivityLogs("data/activitylogs.txt");
             System.out.println("Password changed successfully! Please log in again.");
             authManager.logout();
-            return;
+            return true;
         } else {
             System.out.println("Failed to change password. Old password is incorrect.");
+            return false;
         }
     }
 

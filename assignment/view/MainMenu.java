@@ -38,6 +38,7 @@ public class MainMenu {
         dataManager.loadInternships("data/internships.txt");
         dataManager.linkInternshipsToReps();
         dataManager.loadApplications("data/applications.txt");
+        dataManager.loadActivityLogs("data/activitylogs.txt");
 
         while (true) {
             if (!authManager.isLoggedIn()) {
