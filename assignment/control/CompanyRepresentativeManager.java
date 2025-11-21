@@ -291,6 +291,8 @@ public class CompanyRepresentativeManager {
 
     /**
      * Deletes an internship if it belongs to the specified company representative.
+     * Removes the internship from both the representative's list and the global data store.
+     * Creates an activity log entry for audit trail purposes.
      *
      * @param internshipID the unique identifier of the internship
      * @param rep the company representative who should own the internship
@@ -303,6 +305,7 @@ public class CompanyRepresentativeManager {
         }
 
         rep.getCreatedInternships().remove(internship);
+        dataManager.removeInternship(internshipID);
         ActivityLog log = new ActivityLog(rep.getUserID(), "CompanyRepresentative",
             "Deleted internship: " + internship.getTitle(), internshipID);
         dataManager.addActivityLog(log);

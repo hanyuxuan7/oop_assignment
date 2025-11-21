@@ -24,10 +24,12 @@ public class StudentManager {
     }
 
     /**
-     * Saves all current data to their respective file paths.
+     * Saves all current data and activity logs to their respective file paths.
+     * Persists students, staff, company representatives, internships, applications, and activity logs.
      */
     private void saveData() {
         dataManager.saveAllData("data/students.txt", "data/staff.txt", "data/companyreps.txt", "data/internships.txt", "data/applications.txt");
+        dataManager.saveActivityLogs("data/activitylogs.txt");
     }
 
     /**
@@ -62,7 +64,7 @@ public class StudentManager {
                 !internship.isFull()) {
                 
                 if (openOnly) {
-                    if (today.isAfter(internship.getOpeningDate()) && today.isBefore(internship.getClosingDate())) {
+                    if (!today.isBefore(internship.getOpeningDate()) && !today.isAfter(internship.getClosingDate())) {
                         availableInternships.add(internship);
                     }
                 } else {
@@ -77,6 +79,7 @@ public class StudentManager {
     /**
      * Submits an application for an internship on behalf of the student.
      * Student must not have reached the application limit (3 max) and meet all requirements.
+     * Creates an activity log entry for audit trail purposes.
      *
      * @param student the student applying for the internship
      * @param internshipID the ID of the internship to apply for
@@ -106,6 +109,11 @@ public class StudentManager {
         student.addApplication(application);
         internship.addApplication(application);
         dataManager.addApplication(application);
+        
+        ActivityLog log = new ActivityLog(student.getUserID(), "Student",
+            "Applied for internship: " + internship.getTitle(), internshipID);
+        dataManager.addActivityLog(log);
+        
         saveData();
 
         return true;
@@ -114,6 +122,7 @@ public class StudentManager {
     /**
      * Requests withdrawal of an internship application.
      * If the application has been confirmed, the withdrawal is marked as requested for staff review.
+     * Creates an activity log entry for audit trail purposes.
      *
      * @param student the student withdrawing the application
      * @param applicationID the ID of the application to withdraw
@@ -127,6 +136,9 @@ public class StudentManager {
                 } else {
                     app.requestWithdrawal("Withdrawal request");
                 }
+                ActivityLog log = new ActivityLog(student.getUserID(), "Student",
+                    "Requested withdrawal for application", applicationID);
+                dataManager.addActivityLog(log);
                 saveData();
                 return true;
             }
@@ -137,6 +149,7 @@ public class StudentManager {
     /**
      * Accepts and confirms an internship placement for the student.
      * Only successful applications can be accepted. Accepting one placement withdraws other pending applications.
+     * Creates an activity log entry for audit trail purposes. Updates internship filled slots accordingly.
      *
      * @param student the student accepting the placement
      * @param applicationID the ID of the application to accept
@@ -168,6 +181,10 @@ public class StudentManager {
                     }
                 }
 
+                ActivityLog log = new ActivityLog(student.getUserID(), "Student",
+                    "Accepted placement for internship", app.getInternshipID());
+                dataManager.addActivityLog(log);
+                
                 saveData();
                 return true;
             }

@@ -366,6 +366,15 @@ public class DataManager {
     }
 
     /**
+     * Removes an internship from the data storage by its ID.
+     *
+     * @param internshipID the unique identifier of the internship to remove
+     */
+    public void removeInternship(String internshipID) {
+        internships.remove(internshipID);
+    }
+
+    /**
      * Adds an internship application to the data storage.
      *
      * @param application the application to add
